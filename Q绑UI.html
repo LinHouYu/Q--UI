@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q绑在线查询接口</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            
+        }
+
+            h1 {
+            text-align: center;
+            color: #333;
+            background-image: url('http://pic.bizhi360.com/bbpic/74/874.jpg');
+            padding: 40px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #000000;
+            border-radius: 4px;
+          	 color:#000000;
+        }
+        button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>QQ 查询</h1>
+    <div class="container">
+        <input type="text" id="qqNumber" placeholder="请输入QQ号码">
+        <button onclick="queryQQ()">查询</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function queryQQ() {
+            var qqNumber = document.getElementById("qqNumber").value;
+            var apiUrl = "https://zy.xywlapi.cc/qqapi?qq=" + qqNumber;
+
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // 处理查询结果
+                displayResult(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("result").innerText = "查询失败，请稍后重试。";
+            });
+        }
+
+        function displayResult(data) {
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = ""; // 清空结果
+
+            if (data.status === 200) {
+                resultDiv.innerHTML +=  "<p>查询结果：" + data.message + "</p>" +
+                                        "<p>状态：" + data.status + "</p>" +
+                                        "<p>QQ号：" + data.qq + "</p>" +
+                                        "<p>电话：" + data.phone + "</p>" +
+                                        "<p>电话地区：" + data.phonediqu + "</p>";
+            } else {
+                resultDiv.innerText = "查询失败：" + data.message;
+            }
+        }
+    </script>
+</body>
+</html>
+
